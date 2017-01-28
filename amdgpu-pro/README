@@ -1,0 +1,18 @@
+AMDGPU-Pro Driver
+
+Kernel modules build mode can be specified with BUILDMOD:
+BUILDMOD=1 ./amdgpu-pro.SlackBuild
+
+BUILDMOD valuea are:
+0 - do not build kernel module
+1 - build kernel module at package creation and put it in package
+2 - build kernel module at package installation (default)
+
+You can also run /opt/amdgpu-pro/bin/build_kernel_mod.sh to build kernel module later if kernel is upgraded.
+
+After you compile and install kernel module, reboot is required or unloading of default kernel module amdgpu.
+
+You can also set REPLACELIBS=yes,
+if you want to replace system libraries from mesa and libdrm with AMD ones.
+Backup is made and you can later restore it with:
+/opt/amdgpu-pro/bin/restorelibs.sh

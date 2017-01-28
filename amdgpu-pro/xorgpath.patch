@@ -1,0 +1,9 @@
+--- 10-amdgpu-pro.conf.org	2017-01-27 16:18:47.567001610 +0100
++++ 10-amdgpu-pro.conf	2017-01-27 16:18:57.522001655 +0100
+@@ -6,5 +6,5 @@
+ 
+ Section "Files"
+ 	ModulePath "/opt/amdgpu-pro/lib/xorg/modules"
+-	ModulePath "/usr/lib/xorg/modules"
++	ModulePath "/usr/lib64/xorg/modules"
+ EndSection

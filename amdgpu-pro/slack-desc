@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+amdgpu-pro: amdgpu-pro (AMDGPU-Pro Driver)
+amdgpu-pro:
+amdgpu-pro: AMDGPU-PRO Driver Supported APIs: OpenGL 4.5 and GLX 1.4,
+amdgpu-pro: OpenCL™1.2, Vulkan™ 1.0, VDPAU, Vulkan™ support for DOTA2 Basic
+amdgpu-pro: display features, Basic power management features, KMS (Kernel Mode
+amdgpu-pro: Setting) and ADF (Atomic Display Framework) support GPL compliant
+amdgpu-pro: kernel module, FirePro™ Features (EDID Management and 30-bit color)
+amdgpu-pro:
+amdgpu-pro:
+amdgpu-pro:
+amdgpu-pro: Home: http://support.amd.com/en-us/download/linux
