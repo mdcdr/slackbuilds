@@ -117,6 +117,8 @@ fi
 
 cp $CWD/build_kernel_mod.sh $PKG/opt/amdgpu-pro/bin/
 cp $CWD/restorelibs.sh $PKG/opt/amdgpu-pro/bin/
+chmod +x $PKG/opt/amdgpu-pro/bin/build_kernel_mod.sh
+chmod +x $PKG/opt/amdgpu-pro/bin/restorelibs.sh
 
 mkdir -p $PKG/opt/amdgpu-pro/backup
 
