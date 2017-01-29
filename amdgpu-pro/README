@@ -5,14 +5,23 @@ BUILDMOD=1 ./amdgpu-pro.SlackBuild
 
 BUILDMOD valuea are:
 0 - do not build kernel module
-1 - build kernel module at package creation and put it in package
-2 - build kernel module at package installation (default)
+1 - build kernel module at package creation and put it in package (default)
+2 - build kernel module at package installation
 
 You can also run /opt/amdgpu-pro/bin/build_kernel_mod.sh to build kernel module later if kernel is upgraded.
 
 After you compile and install kernel module, reboot is required or unloading of default kernel module amdgpu.
 
+If you want to compile for another kernel version set KERNELSRC to kernel source directory, for ex.:
+KERNELSRC=/usr/src/linux-4.10-rc5
+
 You can also set REPLACELIBS=yes,
 if you want to replace system libraries from mesa and libdrm with AMD ones.
 Backup is made and you can later restore it with:
 /opt/amdgpu-pro/bin/restorelibs.sh
+
+32bit support (on 64bit arch) can be enabled with:
+INSTALL32BIT=yes
+or disabled:
+INSTALL32BIT=no
+default is auto detect.

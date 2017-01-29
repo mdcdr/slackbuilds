@@ -31,8 +31,9 @@ VERSION=${VERSION:-16.60-379184}
 PKGVER="${VERSION%-*}"
 BUILD=${BUILD:-1}
 TAG=${TAG:-_bst}
-BUILDMOD=${BUILDMOD:-2}
+BUILDMOD=${BUILDMOD:-1}
 REPLACELIBS=${REPLACELIBS:-no}
+INSTALL32BIT=${INSTALL32BIT:-auto}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -44,16 +45,23 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
+set -e
+
 CWD=$(pwd)
 TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 EXFILES=$TMP/$PRGNAM-$VERSION/files
 KVER=`uname -r`
+RUNKVER=$KVER
+if [ -z "$KERNELSRC" ]; then
 KDIR="/lib/modules/$KVER/build"
+else
+KDIR=$KERNELSRC
+cd $KDIR
+KVER=$(make kernelversion) || { echo "Can't get kernel version!"; exit 1; }
+fi
 MODSRC=${MODSRC:-$PKG/usr/src/$PRGNAM-$VERSION}
-
-set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
@@ -65,15 +73,35 @@ cd $PRGNAM-$VERSION
 if [ "$ARCH" = "x86_64" ]; then
   DEBARCH=amd64
   AMDLIB=/opt/amdgpu-pro/lib/x86_64-linux-gnu
+  AMDLIB32=/opt/amdgpu-pro/lib/i386-linux-gnu
 else
   DEBARCH=i386
   AMDLIB=/opt/amdgpu-pro/lib/i386-linux-gnu
+  INSTALL32BIT=no
+fi
+
+if [ "$INSTALL32BIT" = "auto" ]; then
+ [ -e /lib/ld-linux.so.2 ] && { INSTALL32BIT=yes; echo "Detected multilib system"; }
 fi
 
 cd $PKG
 for i in $TMP/$PRGNAM-$VERSION/*_{$DEBARCH,all}.deb; do
- ar p $i data.tar.xz | unxz | tar xv
+ ar p $i data.tar.xz | unxz | tar x
 done
+
+if [ "$INSTALL32BIT" = "yes" ]; then
+ ar p $TMP/$PRGNAM-$VERSION/libdrm-amdgpu-pro-amdgpu1_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libgbm1-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libgl1-amdgpu-pro-glx_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libgl1-amdgpu-pro-dri_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libgles2-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/vulkan-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libvdpau-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libopencl1-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/opencl-amdgpu-pro-icd_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libdrm2-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+ ar p $TMP/$PRGNAM-$VERSION/libegl1-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
+fi
 
 chown -R root:root .
 
@@ -94,14 +122,17 @@ if [ "$BUILDMOD" = "1" ]; then
  if [ ! -f $KDIR/Module.symvers ]; then
   pushd $KDIR >/dev/null
   echo Preparing kernel for compiling modules
-  make modules_prepare
+  make modules_prepare || { echo "Can't prepare kernel!"; exit 1; }
   popd >/dev/null
  fi
  
  cd $MODSRC
  ./pre-build.sh $KVER $PKG/lib/firmware/$KVER $MODSRC
+ if [ ! "$RUNKVER" = "$KVER" ] && [ ! -e "$MODSRC/include/rename_symbol.h" ]; then
+  touch $MODSRC/include/rename_symbol.h
+ fi
  #make -j4 -C $KDIR M=$MODSRC  # internal error with default Slackware gcc ?
- make -C $KDIR M=$MODSRC
+ make -C $KDIR M=$MODSRC || { echo "Kernel module build failed!"; exit 1; }
  strip --strip-debug $MODSRC/amd/amdgpu/amdgpu.ko
  strip --strip-debug $MODSRC/amd/amdkcl/amdkcl.ko
  strip --strip-debug $MODSRC/ttm/amdttm.ko
@@ -149,6 +180,9 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 if [ $REPLACELIBS = "yes" ]; then
  cat $CWD/doinst2.sh > $PKG/install/doinst.sh
+ if [ "$INSTALL32BIT" = "yes" ]; then
+  cat $CWD/doinst3.sh >> $PKG/install/doinst.sh
+ fi
 else
  cat $CWD/doinst.sh > $PKG/install/doinst.sh
 fi
@@ -159,6 +193,15 @@ then
 sed -i '1i$AMDLIB' etc/ld.so.conf
 fi
 EOF
+
+if [ "$INSTALL32BIT" = "yes" ]; then
+cat >> $PKG/install/doinst.sh <<EOF
+if ! grep $AMDLIB32 etc/ld.so.conf > /dev/null
+then
+sed -i '1i$AMDLIB32' etc/ld.so.conf
+fi
+EOF
+fi
 
 echo "/sbin/ldconfig" >> $PKG/install/doinst.sh
 
