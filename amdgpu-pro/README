@@ -25,3 +25,5 @@ INSTALL32BIT=yes
 or disabled:
 INSTALL32BIT=no
 default is auto detect.
+
+NOTE: after removing this package run "depmod" othherwise old amdgpu module won't be loaded
