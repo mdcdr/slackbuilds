@@ -9,10 +9,10 @@
 amdgpu-pro: amdgpu-pro (AMDGPU-Pro Driver)
 amdgpu-pro:
 amdgpu-pro: AMDGPU-PRO Driver Supported APIs: OpenGL 4.5 and GLX 1.4,
-amdgpu-pro: OpenCL™1.2, Vulkan™ 1.0, VDPAU, Vulkan™ support for DOTA2 Basic
+amdgpu-pro: OpenCL 1.2, Vulkan 1.0, VDPAU, Vulkan support for DOTA2 Basic
 amdgpu-pro: display features, Basic power management features, KMS (Kernel Mode
 amdgpu-pro: Setting) and ADF (Atomic Display Framework) support GPL compliant
-amdgpu-pro: kernel module, FirePro™ Features (EDID Management and 30-bit color)
+amdgpu-pro: kernel module, FirePro Features (EDID Management and 30-bit color)
 amdgpu-pro:
 amdgpu-pro:
 amdgpu-pro:

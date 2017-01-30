@@ -34,6 +34,7 @@ TAG=${TAG:-_bst}
 BUILDMOD=${BUILDMOD:-1}
 REPLACELIBS=${REPLACELIBS:-no}
 INSTALL32BIT=${INSTALL32BIT:-auto}
+NUMJOBS=${NUMJOBS:-`nproc`}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -80,16 +81,18 @@ else
   INSTALL32BIT=no
 fi
 
-if [ "$INSTALL32BIT" = "auto" ]; then
- [ -e /lib/ld-linux.so.2 ] && { INSTALL32BIT=yes; echo "Detected multilib system"; }
-fi
-
 cd $PKG
+echo Extracting packages
 for i in $TMP/$PRGNAM-$VERSION/*_{$DEBARCH,all}.deb; do
  ar p $i data.tar.xz | unxz | tar x
 done
 
+if [ "$INSTALL32BIT" = "auto" ]; then
+ [ -e /lib/ld-linux.so.2 ] && { INSTALL32BIT=yes; echo "Detected multilib system"; }
+fi
+
 if [ "$INSTALL32BIT" = "yes" ]; then
+ echo Extracting 32bit packages
  ar p $TMP/$PRGNAM-$VERSION/libdrm-amdgpu-pro-amdgpu1_*i386.deb data.tar.xz | unxz | tar x
  ar p $TMP/$PRGNAM-$VERSION/libgbm1-amdgpu-pro_*i386.deb data.tar.xz | unxz | tar x
  ar p $TMP/$PRGNAM-$VERSION/libgl1-amdgpu-pro-glx_*i386.deb data.tar.xz | unxz | tar x
@@ -131,8 +134,7 @@ if [ "$BUILDMOD" = "1" ]; then
  if [ ! "$RUNKVER" = "$KVER" ] && [ ! -e "$MODSRC/include/rename_symbol.h" ]; then
   touch $MODSRC/include/rename_symbol.h
  fi
- #make -j4 -C $KDIR M=$MODSRC  # internal error with default Slackware gcc ?
- make -C $KDIR M=$MODSRC || { echo "Kernel module build failed!"; exit 1; }
+ make -j$NUMJOBS -C $KDIR M=$MODSRC || { echo "Kernel module build failed!"; exit 1; }
  strip --strip-debug $MODSRC/amd/amdgpu/amdgpu.ko
  strip --strip-debug $MODSRC/amd/amdkcl/amdkcl.ko
  strip --strip-debug $MODSRC/ttm/amdttm.ko
@@ -203,11 +205,9 @@ fi
 EOF
 fi
 
-echo "/sbin/ldconfig" >> $PKG/install/doinst.sh
-
 [ "$BUILDMOD" = "1" ] && echo "depmod -a" >> $PKG/install/doinst.sh
 
 [ "$BUILDMOD" = "2" ] && echo "/opt/amdgpu-pro/bin/build_kernel_mod.sh" >> $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l n -c n $OUTPUT/$PRGNAM-$PKGVER-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$PKGVER-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}

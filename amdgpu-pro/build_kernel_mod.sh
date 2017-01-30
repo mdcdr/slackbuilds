@@ -2,6 +2,7 @@
 KVER=`uname -r`
 RUNKVER=$KVER
 KDIR="/lib/modules/$KVER/build"
+NUMJOBS=${NUMJOBS:-`nproc`}
 
 PRGNAM=amdgpu-pro
 VERSION=${VERSION:-16.60-379184}
@@ -24,8 +25,7 @@ fi
 echo Building amdgpu-pro kernel modules
 cd $MODSRC
 ./pre-build.sh $KVER
-#make -j4 -C $KDIR M=$MODSRC
-make -C $KDIR M=$MODSRC || { echo "Kernel module build failed!"; exit 1; }
+make -j$NUMJOBS -C $KDIR M=$MODSRC || { echo "Kernel module build failed!"; exit 1; }
 mkdir -p $PKG/etc/depmod.d
 echo "override amdgpu * extra/amd/amdgpu" > $PKG/etc/depmod.d/amdgpu-pro.conf
 make -C $KDIR M=$MODSRC modules_install
