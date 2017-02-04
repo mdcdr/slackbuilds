@@ -159,6 +159,12 @@ cp $CWD/restorelibs.sh $PKG/opt/amdgpu-pro/bin/
 chmod +x $PKG/opt/amdgpu-pro/bin/build_kernel_mod.sh
 chmod +x $PKG/opt/amdgpu-pro/bin/restorelibs.sh
 
+if [ ! -e /lib64/libtinfo.so.5 ] && [ ! -e /usr/lib64/libtinfo.so.5 ]; then
+ mkdir -p $PKG/lib64
+ cd $PKG/lib64/
+ ln -s libncurses.so.5 libtinfo.so.5
+fi
+
 mkdir -p $PKG/opt/amdgpu-pro/backup
 
 #mv $PKG/etc/gbm/gbm.conf $PKG/etc/gbm/gbm.conf.new
