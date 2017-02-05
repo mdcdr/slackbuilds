@@ -208,6 +208,8 @@ sed -i '1i$AMDLIB' etc/ld.so.conf
 fi
 EOF
 
+LIBPATH=/opt/amdgpu-pro/lib/x86_64-linux-gnu
+
 if [ "$INSTALL32BIT" = "yes" ]; then
 cat >> $PKG/install/doinst.sh <<EOF
 if ! grep $AMDLIB32 etc/ld.so.conf > /dev/null
@@ -215,7 +217,22 @@ then
 sed -i '1i$AMDLIB32' etc/ld.so.conf
 fi
 EOF
+LIBPATH=$LIBPATH:/opt/amdgpu-pro/lib/i386-linux-gnu
 fi
+
+mkdir -p $PKG/etc/profile.d
+cat > $PKG/etc/profile.d/amdgpu-pro.sh <<EOF
+#!/bin/sh
+export LD_LIBRARY_PATH="$LIBPATH:\$LD_LIBRARY_PATH"
+EOF
+
+cat > $PKG/etc/profile.d/amdgpu-pro.csh <<EOF
+#!/bin/csh
+setenv LD_LIBRARY_PATH "$LIBPATH:\${LD_LIBRARY_PATH}"
+EOF
+
+chmod +x $PKG/etc/profile.d/amdgpu-pro.sh
+chmod +x $PKG/etc/profile.d/amdgpu-pro.csh
 
 [ "$BUILDMOD" = "1" ] && echo "depmod -a" >> $PKG/install/doinst.sh
 
