@@ -144,6 +144,7 @@ if [ "$BUILDMOD" = "1" ]; then
  cp $MODSRC/amd/amdgpu/amdgpu.ko $PKG/lib/modules/$KVER/extra/amd/amdgpu/
  cp $MODSRC/amd/amdkcl/amdkcl.ko $PKG/lib/modules/$KVER/extra/amd/amdkcl/
  cp $MODSRC/ttm/amdttm.ko $PKG/lib/modules/$KVER/extra/ttm
+ make -C $KDIR M=$MODSRC clean
  mkdir -p $PKG/etc/depmod.d
  echo "override amdgpu * extra/amd/amdgpu" > $PKG/etc/depmod.d/amdgpu-pro.conf
 fi
