@@ -6,7 +6,6 @@ iptables log messages to detect port scans and other suspicious traffic.
 A typical deployment is to run psad on the iptables firewall where it has
 the fastest access to log data.
 
-
 You can set email for alerts by setting ALERTSEMAIL:
 
 ALERTSEMAIL=alerts@example.com ./psad.SlackBuild
@@ -16,7 +15,7 @@ You need at least these rules:
 iptables -A INPUT -j LOG
 iptables -A FORWARD -j LOG
 
-but more usefull will be somthing line this:
+but more usefull will be something like this:
 
 iptables -A INPUT -i lo -j ACCEPT
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT

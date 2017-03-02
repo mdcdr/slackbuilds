@@ -30,12 +30,10 @@ ALERTSEMAIL=${ALERTSEMAIL:-root@localhost}
 
 SRCNAM="$(printf $PRGNAM | cut -d- -f2-)"
 
-# Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i586 ;;
     arm*) ARCH=arm ;;
-# Unless $ARCH is already set, use uname -m for all other archs:
        *) ARCH=$( uname -m ) ;;
   esac
 fi
@@ -77,6 +75,7 @@ mkdir -p $PKG/var/lib
 mkdir -p $PKG/var/run
 
 sed -i 's/ENABLE_PSADWATCHD           N;/ENABLE_PSADWATCHD           Y;/g' psad.conf
+sed -i "s|usr/share/man|usr/man|g" install.pl
 
 perl install.pl \
   --install-root $PKG \
@@ -97,11 +96,6 @@ echo $SRCPATH2
 find $PKG/ -type f -name '*.conf' -exec sed -i "s/$SRCPATH/$DSTPATH/g" {} +
 find $PKG/ -type f -regex '.*\.\(pod\|conf\|packlist\)' -exec sed -i "s/$SRCPATH2/$DSTPATH/g" {} +
 
-#chmod --reference=/var $PKG/var
-#chmod --reference=/var/log $PKG/var/log
-#chmod --reference=/var/lib $PKG/var/lib
-#chmod --reference=/var/run $PKG/var/run
-
 mkdir -p $PKG/etc/logrotate.d
 cp logrotate.psad $PKG/etc/logrotate.d/
 
@@ -120,8 +114,7 @@ sed -i 's/start)/start)\n    mkdir -p \/var\/run\/psad/g' $PKG/etc/rc.d/rc.psad.
 sed -i 's/\/var\/log\/messages;/\/var\/log\/syslog;/g' $PKG/etc/psad/psad.conf.new
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  BENCHMARK CREDITS ChangeLog FW_EXAMPLE_RULES FW_HELP LICENSE README README.SYSLOG \
+cp -a BENCHMARK CREDITS ChangeLog FW_EXAMPLE_RULES FW_HELP LICENSE README* \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
@@ -129,6 +122,5 @@ mkdir -p $PKG/install
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
-# Make the package; be sure to leave it in $OUTPUT
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
