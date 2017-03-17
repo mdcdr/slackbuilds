@@ -6,11 +6,11 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
                    |-----handy-ruler------------------------------------------------------|
-perl-IPTables-Parse: IPTables-Parse (Perl extension for parsing iptables and
-perl-IPTables-Parse: ip6tables policies)
+perl-IPTables-Parse: IPTables-Parse (parsing iptables and ip6tables policies)
 perl-IPTables-Parse:
-perl-IPTables-Parse: The IPTables::Parse package provides an interface to parse iptables or
-perl-IPTables-Parse: ip6tables rules on Linux systems through the direct execution of
+perl-IPTables-Parse:
+perl-IPTables-Parse: The IPTables::Parse package provides an interface to parse iptables
+perl-IPTables-Parse: or ip6tables rules on Linux systems through the direct execution of
 perl-IPTables-Parse: iptables/ip6tables commands, or from parsing a file that contains an
 perl-IPTables-Parse: iptables/ip6tables policy listing.
 perl-IPTables-Parse:

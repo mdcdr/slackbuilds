@@ -6,8 +6,8 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
                       |-----handy-ruler------------------------------------------------------|
-perl-IPTables-ChainMgr: IPTables-ChainMgr (Perl extension for manipulating iptables
-perl-IPTables-ChainMgr: and ip6tables policies)
+perl-IPTables-ChainMgr: IPTables-ChainMgr (manipulate iptables and ip6tables policies)
+perl-IPTables-ChainMgr:
 perl-IPTables-ChainMgr:
 perl-IPTables-ChainMgr: The IPTables::ChainMgr package provides an interface to manipulate
 perl-IPTables-ChainMgr: iptables and ip6tables policies on Linux systems through the direct
