@@ -1,0 +1,12 @@
+diff -Naur amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_io.c amdgpu-pro-17.10-401251/amd/amdkcl/kcl_io.c
+--- amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_io.c	2017-03-22 04:29:19.000000000 +0100
++++ amdgpu-pro-17.10-401251/amd/amdkcl/kcl_io.c	2017-04-08 15:35:09.535011969 +0200
+@@ -31,4 +31,8 @@
+ 	_kcl_io_free_memtype = amdkcl_fp_setup("io_free_memtype", NULL);
+ }
+ #endif
++#else
++void amdkcl_io_init(void)
++{
++}
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 0) */

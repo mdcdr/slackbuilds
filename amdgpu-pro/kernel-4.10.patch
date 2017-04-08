@@ -2773,18 +2773,6 @@ diff -Naur amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_fence_array.c amdgpu-pro-1
  	array = kzalloc(size, GFP_KERNEL);
  	if (!array)
  		return NULL;
-diff -Naur amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_io.c amdgpu-pro-17.10-401251/amd/amdkcl/kcl_io.c
---- amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_io.c	2017-03-22 04:29:19.000000000 +0100
-+++ amdgpu-pro-17.10-401251/amd/amdkcl/kcl_io.c	2017-04-08 15:35:09.535011969 +0200
-@@ -31,4 +31,8 @@
- 	_kcl_io_free_memtype = amdkcl_fp_setup("io_free_memtype", NULL);
- }
- #endif
-+#else
-+void amdkcl_io_init(void)
-+{
-+}
- #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 0) */
 diff -Naur amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_reservation.c amdgpu-pro-17.10-401251/amd/amdkcl/kcl_reservation.c
 --- amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_reservation.c	2017-03-22 04:29:19.000000000 +0100
 +++ amdgpu-pro-17.10-401251/amd/amdkcl/kcl_reservation.c	2017-04-08 15:35:09.535011969 +0200
@@ -3007,24 +2995,6 @@ diff -Naur amdgpu-pro-17.10-401251-org/amd/display/amdgpu_dm/amdgpu_dm_types.c a
  
  	return ret;
  }
-diff -Naur amdgpu-pro-17.10-401251-org/amd/display/dc/dm_services.h amdgpu-pro-17.10-401251/amd/display/dc/dm_services.h
---- amdgpu-pro-17.10-401251-org/amd/display/dc/dm_services.h	2017-03-22 04:29:19.000000000 +0100
-+++ amdgpu-pro-17.10-401251/amd/display/dc/dm_services.h	2017-04-08 15:35:09.536011969 +0200
-@@ -67,6 +67,14 @@
- #endif
- 
- #define BREAK_TO_DEBUGGER() ASSERT(0)
-+#else
-+#define ASSERT(expr) WARN_ON(!(expr))
-+#define BREAK_TO_DEBUGGER() ASSERT(0)
-+#define ASSERT_CRITICAL(expr) do { \
-+if (WARN_ON(!(expr))) { \
-+; \
-+} \
-+} while (0)
- 
- #endif /* CONFIG_DEBUG_KERNEL || CONFIG_DEBUG_DRIVER */
- 
 diff -Naur amdgpu-pro-17.10-401251-org/amd/scheduler/gpu_sched_trace.h amdgpu-pro-17.10-401251/amd/scheduler/gpu_sched_trace.h
 --- amdgpu-pro-17.10-401251-org/amd/scheduler/gpu_sched_trace.h	2017-03-22 04:29:21.000000000 +0100
 +++ amdgpu-pro-17.10-401251/amd/scheduler/gpu_sched_trace.h	2017-04-08 15:35:09.537011969 +0200

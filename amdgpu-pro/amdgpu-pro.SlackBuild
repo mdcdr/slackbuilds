@@ -113,6 +113,10 @@ chown -R root:root .
 cd $PKG/usr/src/$PRGNAM-$VERSION
 patch -p1 < $CWD/kernel-4.4.patch
 
+if kernel_gt $KVER "4.8.99"; then
+ patch -p1 < $CWD/kernel-4.9.patch
+fi
+
 if kernel_gt $KVER "4.9.99"; then
  patch -p1 < $CWD/kernel-4.10.patch
 fi

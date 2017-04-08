@@ -22,3 +22,20 @@ diff -Naur amdgpu-pro-17.10-401251-org/include/kcl/kcl_drm.h amdgpu-pro-17.10-40
  struct drm_atomic_state *
  drm_atomic_helper_duplicate_state(struct drm_device *dev,
  				  struct drm_modeset_acquire_ctx *ctx);
+diff -Naur amdgpu-pro-17.10-401251-org/amd/display/dc/dm_services.h amdgpu-pro-17.10-401251/amd/display/dc/dm_services.h
+--- amdgpu-pro-17.10-401251-org/amd/display/dc/dm_services.h	2017-03-22 04:29:19.000000000 +0100
++++ amdgpu-pro-17.10-401251/amd/display/dc/dm_services.h	2017-04-08 15:35:09.536011969 +0200
+@@ -67,6 +67,14 @@
+ #endif
+ 
+ #define BREAK_TO_DEBUGGER() ASSERT(0)
++#else
++#define ASSERT(expr) WARN_ON(!(expr))
++#define BREAK_TO_DEBUGGER() ASSERT(0)
++#define ASSERT_CRITICAL(expr) do { \
++if (WARN_ON(!(expr))) { \
++; \
++} \
++} while (0)
+ 
+ #endif /* CONFIG_DEBUG_KERNEL || CONFIG_DEBUG_DRIVER */
