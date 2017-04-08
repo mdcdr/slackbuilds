@@ -5,7 +5,7 @@ KDIR="/lib/modules/$KVER/build"
 NUMJOBS=${NUMJOBS:-`nproc`}
 
 PRGNAM=amdgpu-pro
-VERSION=${VERSION:-16.60-379184}
+VERSION=${VERSION:-17.10-401251}
 MODSRC=${MODSRC:-/usr/src/$PRGNAM-$VERSION}
 
 set -e

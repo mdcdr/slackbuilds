@@ -1,7 +1,7 @@
-diff -Naur amdgpu-pro-16.60-379184-org/amd/amdkcl/kcl_drm.c amdgpu-pro-16.60-379184/amd/amdkcl/kcl_drm.c
---- amdgpu-pro-16.60-379184-org/amd/amdkcl/kcl_drm.c	2017-01-23 03:01:42.000000000 +0100
-+++ amdgpu-pro-16.60-379184/amd/amdkcl/kcl_drm.c	2017-01-28 17:55:25.187050589 +0100
-@@ -339,7 +339,7 @@
+diff -Naur amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_drm.c amdgpu-pro-17.10-401251/amd/amdkcl/kcl_drm.c
+--- amdgpu-pro-17.10-401251-org/amd/amdkcl/kcl_drm.c	2017-03-22 04:29:19.000000000 +0100
++++ amdgpu-pro-17.10-401251/amd/amdkcl/kcl_drm.c	2017-04-08 12:51:07.496355031 +0200
+@@ -386,7 +386,7 @@
  }
  EXPORT_SYMBOL(drm_atomic_helper_disable_all);
  
@@ -10,10 +10,10 @@ diff -Naur amdgpu-pro-16.60-379184-org/amd/amdkcl/kcl_drm.c amdgpu-pro-16.60-379
  struct drm_atomic_state *
  drm_atomic_helper_duplicate_state(struct drm_device *dev,
  				  struct drm_modeset_acquire_ctx *ctx)
-diff -Naur amdgpu-pro-16.60-379184-org/include/kcl/kcl_drm.h amdgpu-pro-16.60-379184/include/kcl/kcl_drm.h
---- amdgpu-pro-16.60-379184-org/include/kcl/kcl_drm.h	2017-01-23 03:01:48.000000000 +0100
-+++ amdgpu-pro-16.60-379184/include/kcl/kcl_drm.h	2017-01-28 17:54:46.407047721 +0100
-@@ -234,7 +234,7 @@
+diff -Naur amdgpu-pro-17.10-401251-org/include/kcl/kcl_drm.h amdgpu-pro-17.10-401251/include/kcl/kcl_drm.h
+--- amdgpu-pro-17.10-401251-org/include/kcl/kcl_drm.h	2017-03-22 04:29:24.000000000 +0100
++++ amdgpu-pro-17.10-401251/include/kcl/kcl_drm.h	2017-04-08 12:51:07.497355031 +0200
+@@ -53,7 +53,7 @@
  			     struct drm_modeset_acquire_ctx *ctx);
  int drm_atomic_helper_disable_all(struct drm_device *dev,
  				  struct drm_modeset_acquire_ctx *ctx);

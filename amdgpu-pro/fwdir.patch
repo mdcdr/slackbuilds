@@ -1,11 +1,10 @@
-diff -Naur amdgpu-pro-16.60-379184-org/pre-build.sh amdgpu-pro-16.60-379184/pre-build.sh
---- amdgpu-pro-16.60-379184-org/pre-build.sh	2017-01-23 05:40:58.000000000 +0100
-+++ amdgpu-pro-16.60-379184/pre-build.sh	2017-01-28 11:00:22.000000000 +0100
+--- amdgpu-pro-17.10-401251-org/pre-build.sh	2017-03-22 04:33:00.000000000 +0100
++++ amdgpu-pro-17.10-401251/pre-build.sh	2017-04-08 12:45:42.898370378 +0200
 @@ -2,6 +2,7 @@
  
  KERNELVER=$1
  KERNELVER_BASE=${KERNELVER%%-*}
-+SRCDIR=${3-/usr/src/amdgpu-pro-16.60-379184}
++SRCDIR=${3-/usr/src/amdgpu-pro-17.10-401251}
  
  version_lt () {
      newest=$((echo "$KERNELVER_BASE"; echo "$1") | sort -V | tail -n1)
@@ -16,7 +15,7 @@ diff -Naur amdgpu-pro-16.60-379184-org/pre-build.sh amdgpu-pro-16.60-379184/pre-
 -FW_DIR="/lib/firmware/$KERNELVER"
 +FW_DIR=${2:-/lib/firmware/$KERNELVER}
  mkdir -p $FW_DIR
--cp -ar /usr/src/amdgpu-pro-16.60-379184/firmware/radeon $FW_DIR
--cp -ar /usr/src/amdgpu-pro-16.60-379184/firmware/amdgpu $FW_DIR
+-cp -ar /usr/src/amdgpu-pro-17.10-401251/firmware/radeon $FW_DIR
+-cp -ar /usr/src/amdgpu-pro-17.10-401251/firmware/amdgpu $FW_DIR
 +cp -ar $SRCDIR/firmware/radeon $FW_DIR
 +cp -ar $SRCDIR/firmware/amdgpu $FW_DIR
